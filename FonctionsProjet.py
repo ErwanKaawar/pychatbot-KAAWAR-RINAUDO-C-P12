@@ -515,6 +515,9 @@ def présence(question, dossier):
                 liste_mots.append(LQ[i])
     return liste_mots
 
+def bonjour():
+    return 'bonjour'
+
 
 
 
