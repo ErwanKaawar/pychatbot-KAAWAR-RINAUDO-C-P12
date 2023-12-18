@@ -3,7 +3,6 @@ from FonctionsProjet import *
 if __name__ == '__main__':
     directory = "./speeches"
     files_names = list_of_files(directory, "txt")
-
     def fonction_Noms_president():
         nom_fichier=input("Merci de rentrer le nom du fichier:")
         print(noms_president(nom_fichier))
@@ -47,8 +46,21 @@ if __name__ == '__main__':
         question=input("Merci de rentrer la question")
         print(liste_mot_question(question))
 
+    def fonction_presence():
+        question = input("Merci de rentrer la question")
+        print(présence(question,"cleaned"))
 
+    def fonction_doc_pertinent():
+        question = input("Merci de rentrer la question")
+        matrice=matriceTFIDF("cleaned")
+        print(doc_pertinent(matrice,TFIDF_question(question,"cleaned"),files_names))
 
+    def fonction_reponse_generer():
+        question = input("Merci de rentrer la question")
+        print(reponse_generer("cleaned",question))
+    def fonction_affiner_reponse():
+        question = input("Merci de rentrer la question")
+        print(reponse_affiner("cleaned",question))
 
     print("Menu :")
     print("Taper 1: Noms_president : Cette fonction va vous permettre d'extraire le nom du président avec le nom du fichier fourni")
@@ -65,6 +77,10 @@ if __name__ == '__main__':
     print("Taper 12 : climat ecologie : cette fonction va indiquer le premier président à parler du climat et/ou de l’écologie ")
     print("Taper 13 : mot hormis non important : Cette fonction va indiquer les mots  que tous les présidents ont prononcés hormis les mots non importants")
     print("Taper 14 : Liste mot question : Fonction qui va transformer une question en liste de mots qui compose la question")
+    print("Taper 15 : présence : Fonction qui retourne une liste de mots qui sont dans la question posée et dans les fichiers d'un dossier donné ")
+    print("Taper 16 : doc pertinent : Fonction qui retourne le document le plus pertinent à la question posée ")
+    print("Taper 17 : reponse generer : Fonction qui va générer une réponse adéquate à la question posée ")
+    print("Taper 18 : affiner reponse : Fonction qui va permettre d'ajouter des modèles de réponses en début de la réponse générée" )
 
     fonction_choisie=int(input("Merci de rentrer le numéro de la fonction que vous souhaitez utiliser:"))
     if fonction_choisie==1:
@@ -95,6 +111,15 @@ if __name__ == '__main__':
         fonction_mot_hormis_non_important()
     elif fonction_choisie==14:
         fonction_question_liste_mot()
+    elif fonction_choisie==15:
+        fonction_presence()
+    elif fonction_choisie==16:
+        fonction_doc_pertinent()
+    elif fonction_choisie==17:
+        fonction_reponse_generer()
+    elif fonction_choisie==18:
+        fonction_affiner_reponse()
+
 
     else:
         print("Merci de rentrer un numéro valide")

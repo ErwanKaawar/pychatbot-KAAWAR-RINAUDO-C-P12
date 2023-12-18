@@ -143,6 +143,7 @@ def matriceTFIDF(dossier):
     matrice=[]
     for i in range(ligne):
         L=[]
+        L.append(listecle[i])
         for j in range(col):
             dicoTF= calculTF(dossier, ListeFichier[j]) #Dico de chaque mot avec son ScoreTF du fichier d'indice j dans listeFichier
             if listecle[i] not in dicoTF or listecle[i] not in DicoIDF: #Si le mot n'est pas dans DicoTF ou il est pas dans DICOIDF alors son score sera de 0
@@ -167,7 +168,7 @@ def motnonimportant(dossier):
     L=[]
     for i in range(len(matrice)):
         somme = 0
-        for j in range(len(matrice[0])): #On commence à l'indice 1 car l'indice 0 équivaut au mot, les indices suivant sont les score TF-IDF du mot
+        for j in range(1,len(matrice[0])): #On commence à l'indice 1 car l'indice 0 équivaut au mot, les indices suivant sont les score TF-IDF du mot
             somme+=matrice[i][j]        # On fait la somme de tous les score TF-IDF du mot
         if somme==0:                        #Si la somme = 0 alors on intègre le mot dans la matrice
             L.append(listecle[i])
@@ -224,6 +225,7 @@ def nom_fichier(dossier,president): #Ce code va nous permettre de récupérer le
 
 
 def mot_repete(dossier,president):
+    non_important=motnonimportant(dossier)
     L=[]
     max=0
     fichiers_president=nom_fichier(dossier,president) #On va récupérer l'ensemble des fichiers d'allocutions du président
@@ -246,11 +248,11 @@ def mot_repete(dossier,president):
         fc.close()
     Dico=DictNbrMot(texte) #Dictionnaire avec comme clé chaque mot et valeur son nombre d'occurrence
     for key,valeur in Dico.items():  #Lorsqu'on a le texte On va récupérer le mot qui a le nombre d'occurrences le plus élevé
-        if valeur>max:
+        if valeur>max and key not in non_important:
             L=[]  #Réinitialisation de la liste, on va remplacer l'ancienne valeur par la nouvelle
             max=valeur
             L.append((key,max))
-        elif valeur==max:  # SI deux mots ont le meme nombre d'apparitions dans le document
+        elif valeur==max and key not in non_important:  # SI deux mots ont le meme nombre d'apparitions dans le document
             L.append((key,max)) # Alors on ajoute la clé avec sa valeur DONC max
     return L
 
@@ -312,9 +314,9 @@ def mot_hormis_nonimportant(dossier):
     listesansdouble = []
     for keys,valeurs in dico_president.items():
         if valeurs>1:
-            listedoublons.append(keys)
+            listedoublons.append(keys) #On va avoir une liste de presidents ayant des doublons
         else:
-            listesansdouble.append(keys)
+            listesansdouble.append(keys) #On va avoir une liste des presidents n'ayant pas de doublons
     for i in listedoublons:
         fichiers_president = nom_fichier(dossier, i)
         texte = ""
@@ -323,8 +325,8 @@ def mot_hormis_nonimportant(dossier):
             with open(fichier_Courant, "r") as fc:
                 contenu = fc.readlines()
                 for ligne in contenu:
-                    texte += ligne
-        liste_texte.append(texte)
+                    texte += ligne #On va fusionner les 2 textes d'un president ayant des fichiers doubles
+        liste_texte.append(texte) #Et l'ajouter dans une liste de tous les textes
     for i in listesansdouble:
         texte=""
         fichier=nom_fichier(dossier,i)
@@ -334,12 +336,12 @@ def mot_hormis_nonimportant(dossier):
             for ligne in contenu:
                 texte += ligne
             fc.close()
-        liste_texte.append(texte)
+        liste_texte.append(texte) #Ajout du texte dans la liste de texte
     DicoEvoque={}
     for texte in liste_texte:
         DicoNbrmot=DictNbrMot(texte)
         for key, valeurs in DicoNbrmot.items():
-            if valeurs>=1:
+            if valeurs>=1: #On va compter regarder dans combien de textes différents est le mot
                 if key not in DicoEvoque:
                     DicoEvoque[key]=1
                 else:
@@ -348,25 +350,9 @@ def mot_hormis_nonimportant(dossier):
         del DicoEvoque['']  # enlever les espaces contenu comme clé dans dico
     mot_non_important=motnonimportant(dossier)
     for key, valeurs in DicoEvoque.items():
-        if valeurs == len(dico_president) and key not in mot_non_important:
+        if valeurs == len(dico_president) and key not in mot_non_important: #Si le mot a la meme valeur que le nombre de president et qu'il n'est pas dans mot non important on l'ajoute donc dans la liste des mots non importants
             listeMotEvoque.append(key)
     return listeMotEvoque
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        #FAUT QUE JE PARCOURS LES LITES AVEC DICO ET QUE CE SOIT 6
-    #On va à present parcourir les différents textes, on commence par les textes doubl
 
 
 def liste_mot_question(question):
@@ -410,71 +396,6 @@ def liste_mot_question(question):
             i+=1
     return liste_mot
 
-
-def TFIDF_question(question,dossier):
-    files_names = list_of_files(dossier, "txt")
-    liste_question=liste_mot_question(question)
-    DicoIDF=calculIDF(dossier) #On crée le DicoIDF  avec comme clé chaque mot et comme valeur son score IDF
-    listevaleur=[]
-    for valeur in DicoIDF.values():
-        listevaleur.append(valeur)
-    listecle = []
-    for key in DicoIDF.keys():
-        listecle.append(key) #On récupère chaque mot contenu dans DicoIDF pour faire une liste de mot
-    dicoquestion={}
-    for i in liste_question:
-        if i in dicoquestion:
-            dicoquestion[i]+=1
-        else:
-            dicoquestion[i]=1
-
-    longueur=len(listecle)
-    col=len(files_names)
-    L=[]
-    for i in range(longueur):
-        if listecle[i] in dicoquestion.keys():
-            frequenceTF=dicoquestion[listecle[i]]/col
-            L.append(frequenceTF*listevaleur[i])
-        else:
-            L.append(0)
-    return L
-
-def produit_scalair(A, B):
-    L = 0
-    for i in range(len(A)):
-        L += A[i]*B[i]
-    return L
-
-def norme(A):
-    somme_des_carrés = 0
-    for i in A:
-        somme_des_carrés += i**2
-    return sqrt(somme_des_carrés)
-
-def similarité(A, B):
-    similarite = produit_scalair(A, B) / (norme(A) * norme(B))
-    return similarite
-
-def vecteurTFIDF_document(matrice):
-    L2 = []
-    for i in range(1, len(matrice[0])):
-        L = []
-        for ligne in matrice:
-            L.append(ligne[i])
-        L2.append(L)
-    return L2
-
-def doc_pertinent(matrice_transpo, vecteurTFIDF_question, liste_fichiers):
-    doc_max = 0
-    doc_numéro = 0
-    max = 0
-    for ligne in matrice_transpo:
-        if similarité(ligne, vecteurTFIDF_question) > max:
-            doc_max = doc_numéro
-            max = similarité(ligne, vecteurTFIDF_question)
-        doc_numéro += 1
-    nom_document_max = liste_fichiers[doc_max]
-    return nom_document_max
 def présence(question, dossier):
     ListeFichier = list_of_files(dossier, "txt")
     liste_mots = []
@@ -515,8 +436,139 @@ def présence(question, dossier):
                 liste_mots.append(LQ[i])
     return liste_mots
 
-def bonjour():
-    return 'bonjour'
+
+
+def TFIDF_question(question,dossier):
+    files_names = list_of_files(dossier, "txt")
+    liste_question=liste_mot_question(question)
+    DicoIDF=calculIDF(dossier) #On crée le DicoIDF  avec comme clé chaque mot et comme valeur son score IDF
+    listevaleur=[]
+    for valeur in DicoIDF.values():
+        listevaleur.append(valeur)
+    listecle = []
+    for key in DicoIDF.keys():
+        listecle.append(key) #On récupère chaque mot contenu dans DicoIDF pour faire une liste de mot
+    dicoquestion={}
+    for i in liste_question:
+        if i in dicoquestion:
+            dicoquestion[i]+=1
+        else:
+            dicoquestion[i]=1
+
+    longueur=len(listecle)
+    col=len(files_names)
+    L=[]
+    for i in range(longueur):
+        if listecle[i] in dicoquestion.keys(): #On regarde si il y a dans le dictionnaire le mot dans le corpus de documents
+            frequenceTF=dicoquestion[listecle[i]] #Calcul de la frequenceTF
+            L.append(frequenceTF*listevaleur[i])
+        else:
+            L.append(0)
+    return L
+
+def produit_scalair(A, B):
+    L = 0
+    for i in range(len(A)):
+        L += A[i]*B[i]
+    return L
+
+def norme(A):
+    somme_des_carrés = 0
+    for i in A:
+        somme_des_carrés += i**2
+    return math.sqrt(somme_des_carrés)
+
+def similarité(A, B):
+    simil = produit_scalair(A, B) / norme(A) * norme(B)
+    return simil
+
+def matrice_transposee(matrice):
+    L2 = []
+    for i in range(1, len(matrice[0])):
+        L = []
+        for ligne in matrice:
+            L.append(ligne[i])
+        L2.append(L)
+    return L2
+
+
+def doc_pertinent(matrice, vecteurTFIDF_question, liste_fichiers):
+    matrice_transpo=matrice_transposee(matrice)
+    doc_max = 0
+    doc_numéro = 0
+    max = 0
+    for ligne in matrice_transpo:
+        if similarité(ligne, vecteurTFIDF_question) > max:
+            doc_max = doc_numéro
+            max = similarité(ligne, vecteurTFIDF_question)
+        doc_numéro += 1
+    nom_document_max = liste_fichiers[doc_max]
+    return nom_document_max
+
+
+def reponse_generer(dossier,question):
+    mat=matriceTFIDF(dossier)
+    vecteur_question=TFIDF_question(question,dossier)
+    liste_fichier=list_of_files(dossier,'txt')
+    document=doc_pertinent(mat, vecteur_question, liste_fichier) #On récupère tout d'abord le document pertinent
+    numero_doc_president=list_of_files(dossier,".txt")
+    indice_president=0
+    while document!=numero_doc_president[indice_president]:
+        indice_president+=1 #On récupère l'indice du document
+    maxTFIDF=0
+    maxmot=""
+    matriceTFIDFF=matriceTFIDF(dossier)
+    liste_mot=liste_mot_question(question)
+    for i in range(len(matriceTFIDFF)):
+        if matriceTFIDFF[i][0] in liste_mot:
+            if maxTFIDF<matriceTFIDFF[i][indice_president+1]: #On ajoute +1 car l'indice 0 est l'indice du mot
+                maxTFIDF=matriceTFIDFF[i][indice_president+1] #On cherche le TFIDF MAX
+                maxmot=matriceTFIDFF[i][0] #On prend le mot de la matrice à l'indice 0
+    fichier_courant="speeches/"+document #On cherche dans speeches car on a besoin des ponctuations
+    texte=""
+    with open(fichier_courant,"r") as fc:
+        contenu = fc.readlines()
+        for ligne in contenu:
+            texte += ligne.rstrip('\n') #enlever saut de lignes
+    indice_premiere_occurrence=0 #On cherche la premiere occurence du mot pertinent maxmot
+    i=0
+    mot = ""
+    while indice_premiere_occurrence==0 and i<=len(texte):
+        i+=1
+        if texte[i]==" " or texte[i]=="." or texte[i]==",":
+            if mot==maxmot:
+                indice_premiere_occurrence=i
+            mot=""
+            i+=1
+        mot += texte[i]
+    caractere=""
+    i=-1
+    indice_point_debut=0
+    while caractere!="." or i<indice_premiere_occurrence:
+        i += 1
+        caractere=texte[i]
+        if i<indice_premiere_occurrence and caractere==".":
+            indice_point_debut=i #On sauvegarde l'indice du point de debut
+    indice_point_final=i #le derniere caractere que nous verrons sera le point final
+    if indice_point_debut==0:
+        texte_final=texte[indice_point_debut:indice_point_final+1]
+    else:
+        texte_final = texte[indice_point_debut+1:indice_point_final + 1]
+    return texte_final #On ajoute des +1 pour ne pas prendre le point au debut de la phrase et prendre le point à la fin de la phrase
+def reponse_affiner(dossier,question):
+    reponse=reponse_generer(dossier,question)
+    question_starters = {  #Dictionnaire pris sur le moodle
+        "Comment": "Après analyse, ",
+        "Pourquoi": "Car, ",
+        "Peux-tu": "Oui, bien sûr! "
+    }
+    i=0
+    mot=""
+    while question[i]!=" ":
+        mot+=question[i] #On prend le premier mot
+        i+=1
+    return str(question_starters[mot]+reponse) #On met la valeur du premier mot avec la reponse de reponse generer
+
 
 
 
