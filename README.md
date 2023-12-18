@@ -21,6 +21,10 @@ Liste des bugs connus :
 
     -     Aucun mot ne peut avoir dans chaque document un score TF-IDF égal à 0 c'est pour cela que dans la fonction motnonimportant, nous avons calculé la moyenne
         des TF-IDF et pas simplement le fait que la somme des TF-IDF soit égale à 0.
+        
+    - L'utilisation de la fonciton reponse generer avec le modele moodle : "Peux-tu me dire comment une nation peut-elle prendre soin du climat ?" en utilisant
+    le menu ne donne pas la réponse attendu, cependant si on l'utilise dans fonction_Projet en ajoutant et executant
+    print(reponse_generer("cleaned","Peux-tu me dire comment une nation peut-elle prendre soin du climat ?")) , On va alors obtenir le resultat du moodle
 
 Notice d'utilisation des différentes fonctions :
 
