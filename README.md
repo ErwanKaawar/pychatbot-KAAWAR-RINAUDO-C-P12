@@ -24,7 +24,10 @@ Liste des bugs connus :
         
     - L'utilisation de la fonciton reponse generer avec le modele moodle : "Peux-tu me dire comment une nation peut-elle prendre soin du climat ?" en utilisant
     le menu ne donne pas la réponse attendu, cependant si on l'utilise dans fonction_Projet en ajoutant et executant
-    print(reponse_generer("cleaned","Peux-tu me dire comment une nation peut-elle prendre soin du climat ?")) , On va alors obtenir le resultat du moodle
+    print(reponse_generer("cleaned","Peux-tu me dire comment une nation peut-elle prendre soin du climat ?")) , On va alors obtenir le resultat du moodle  
+    
+     - Probleme avec l'utilisation de github, une seule personne a pu ajouter les informations du code sur le github, nous avons alors mis dans le README qui a créé chaque fonction
+     Plusieurs repositories ont été créés dû à cela 
 
 Notice d'utilisation des différentes fonctions :
 
@@ -36,19 +39,19 @@ Notice d'utilisation des différentes fonctions :
     Liste des différentes fonctions:
     Pour toutes les fonctions exécutées avec le menu dans main, merci de ne pas mettre l'input entre guillemets lorsqu'on vous demande d'en saisir.
 
-    1 - Noms_president : Cette fonction va vous permettre d'obtenir le nom du président avec le nom de son fichier, Merci de bien vouloir respecter la syntaxe Nomination_NomdupresidentNumero.txt
+    1 - Noms_president : Cette fonction va vous permettre d'obtenir le nom du président avec le nom de son fichier, Merci de bien vouloir respecter la syntaxe Nomination_NomdupresidentNumero.txt (PAR ERWAN)
     
-    2 - prenoms : Vous allez pouvoir obtenir le prénom du président en entrant son nom
+    2 - prenoms : Vous allez pouvoir obtenir le prénom du président en entrant son nom (PAR ERWAN)
     
-    3 - ConvertirMin : cette fonction va convertir toutes les majuscules d'un document texte en minuscule, elle va ensuite les stocker dans le dossier cleaned
+    3 - ConvertirMin : cette fonction va convertir toutes les majuscules d'un document texte en minuscule, elle va ensuite les stocker dans le dossier cleaned (PAR LUCAS)
 
-    4 - Ponctuation : Cette fonction va supprimer toutes les ponctuations dans une liste de fichiers, merci d'exécuter la fonction ConvertirMin avant celle-là
+    4 - Ponctuation : Cette fonction va supprimer toutes les ponctuations dans une liste de fichiers, merci d'exécuter la fonction ConvertirMin avant celle-là (PAR LUCAS)
 
-    5 - Calcul TF : Cette fonction va calculer le score TF de chaque mot dans un document
+    5 - Calcul TF : Cette fonction va calculer le score TF de chaque mot dans un document (PAR LUCAS)
 
-    6 - Calcul IDF : Cette fonction va calculer le score IDF de chaque mot dans le corpus de documents
+    6 - Calcul IDF : Cette fonction va calculer le score IDF de chaque mot dans le corpus de documents (PAR ERWAN)
 
-    7 - Matrice TF-IDF : Cette fonction va calculer le score TF-IDF de chaque mot dans chaque document
+    7 - Matrice TF-IDF : Cette fonction va calculer le score TF-IDF de chaque mot dans chaque document (PAR ERWAN)
         La matrice se lit de la manière suivant : [[Mot1, scoreTFIDF_doc1, scoreTFIDF_doc2,...,scoreTFIDF_doc8],[Mot2, scoreTFIDF_doc1,                          
         scoreTFIDF_doc2,...,scoreTFIDF_doc8],...]
         
@@ -56,32 +59,33 @@ Notice d'utilisation des différentes fonctions :
             les numéros de chaque document sont donnés dans l'ordre croissant des noms des fichiers, le numéro 1 sera alors celui de Chirac1 et le 8 celui de 
             Sarkozy
             
-    8 - mot non important : Cette fonction va retourner une liste de tous les mots non importants
+    8 - mot non important : Cette fonction va retourner une liste de tous les mots non importants (PAR ERWAN)
         Nous avons fait la moyenne de tous les scores TF-IDF pour et on a pris ceux qui étaient très proches de 0 car aucun mot à un score TF-IDF égal à 0 dans            tous les documents
 
-    9 - mot score TF IDF MAX : cette fonction va retourner une liste du mot ou des mots ayant le plus grand score TF IDF
+    9 - mot score TF IDF MAX : cette fonction va retourner une liste du mot ou des mots ayant le plus grand score TF IDF (PAR LUCAS)
 
-    10 - mot utilisé : Cette fonction va vous retourner les noms des présidents utilisant le mot demandé
+    10 - mot utilisé : Cette fonction va vous retourner les noms des présidents utilisant le mot demandé (PAR LUCAS)
 
-    11 - mot repete : cette fonction va retourner la liste des ou du mot le plus répété par un president et le nombre de fois qu'il l'a répété
+    11 - mot repete : cette fonction va retourner la liste des ou du mot le plus répété par un president et le nombre de fois qu'il l'a répété (PAR ERWAN)
 
-    12 - climat ecologie : cette fonction va indiquer le premier président à parler du climat et/ou de l’écologie 
+    12 - climat ecologie : cette fonction va indiquer le premier président à parler du climat et/ou de l’écologie (PAR LUCAS)
 
-    13 -  mot hormis non important : Cette fonction va indiquer les mots que tous les présidents ont prononcés hormis les mots non importants
+    13 -  mot hormis non important : Cette fonction va indiquer les mots que tous les présidents ont prononcés hormis les mots non importants (PAR ERWAN)
 
     14 - doc_pertinent : Cette fonction va renvoyer le document dans lequel se trouve la phrase ayant la plus grande similarité avec la question posée parmi toutes les autres phrases du corpus
+    (PAR LUCAS)
 
-    15 - produit_scalair : Cette fonction effectue le calcule du produit scalaire de deux listes de même longueur.
+    15 - produit_scalair : Cette fonction effectue le calcule du produit scalaire de deux listes de même longueur. (PAR LUCAS)
 
-    16 - norme : Cette fonction effectue le calcule de la norme d’une liste de nombres
+    16 - norme : Cette fonction effectue le calcule de la norme d’une liste de nombres (PAR LUCAS)
 
-    17 - similarité : Cette fonction va renvoyer un nombre appartenantà l’intervalle [0 ; 1] informant combien deux objets sont similaires
+    17 - similarité : Cette fonction va renvoyer un nombre appartenantà l’intervalle [0 ; 1] informant combien deux objets sont similaires (PAR LUCAS)
 
-    18 - TFIDF_question : Cette fonction va renvoyer le vecteur TFIDF de la question posée
+    18 - TFIDF_question : Cette fonction va renvoyer le vecteur TFIDF de la question posée (PAR ERWAN)
 
-    19 - présence : Cette fonction va renvoyer une liste des mots étant présents dans la question posée ainsi que dans les fichiers d'un dossier donné
+    19 - présence : Cette fonction va renvoyer une liste des mots étant présents dans la question posée ainsi que dans les fichiers d'un dossier donné (PAR LUCAS)
 
-    20 - matrice_transposee : Cette fonction modifie la matrice TFIDF de sorte à ce que les lignes deviennent les documents et les colonnes deviennent le TFIDF de chaque mot de chaque document
+    20 - matrice_transposee : Cette fonction modifie la matrice TFIDF de sorte à ce que les lignes deviennent les documents et les colonnes deviennent le TFIDF de chaque mot de chaque document (PAR ERWAN)
 
-    21 - reponse_generer : Cette fonction permet de retourner des réponses qui soient plus agréables et plus compréhensibles
+    21 - reponse_generer : Cette fonction permet de retourner des réponses qui soient plus agréables et plus compréhensibles (PAR ERWAN)
     
