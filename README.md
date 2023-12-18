@@ -68,4 +68,20 @@ Notice d'utilisation des différentes fonctions :
     12 - climat ecologie : cette fonction va indiquer le premier président à parler du climat et/ou de l’écologie 
 
     13 -  mot hormis non important : Cette fonction va indiquer les mots que tous les présidents ont prononcés hormis les mots non importants
+
+    14 - doc_pertinent : Cette fonction va renvoyer le document dans lequel se trouve la phrase ayant la plus grande similarité avec la question posée parmi toutes les autres phrases du corpus
+
+    15 - produit_scalair : Cette fonction effectue le calcule du produit scalaire de deux listes de même longueur.
+
+    16 - norme : Cette fonction effectue le calcule de la norme d’une liste de nombres
+
+    17 - similarité : Cette fonction va renvoyer un nombre appartenantà l’intervalle [0 ; 1] informant combien deux objets sont similaires
+
+    18 - TFIDF_question : Cette fonction va renvoyer le vecteur TFIDF de la question posée
+
+    19 - présence : Cette fonction va renvoyer une liste des mots étant présents dans la question posée ainsi que dans les fichiers d'un dossier donné
+
+    20 - matrice_transposee : Cette fonction modifie la matrice TFIDF de sorte à ce que les lignes deviennent les documents et les colonnes deviennent le TFIDF de chaque mot de chaque document
+
+    21 - reponse_generer : Cette fonction permet de retourner des réponses qui soient plus agréables et plus compréhensibles
     
